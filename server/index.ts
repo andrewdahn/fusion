@@ -1,20 +1,14 @@
+import * as dotenv from 'dotenv';
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
+dotenv.config();
 
 const app = express();
 
 app.use(express.static(path.join(__dirname, '../client/public')));
 
-app.get('/', (req: Request, res: Response, next: NextFunction): void => {
-  try {
-    res.send('index.html');
-  } catch (error) {
-    next(error);
-  }
-});
-
-const PORT = 3000;
+const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
+  console.log(`Listening on http://localhost:${PORT}`);
 });

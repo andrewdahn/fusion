@@ -13,6 +13,11 @@ module.exports = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.css$/i,
+        include: path.resolve(__dirname, 'client/src'),
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
+      },
     ],
   },
   mode: 'development',
