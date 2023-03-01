@@ -34,13 +34,15 @@ app.get('/summaries', (req: Request, res: Response) => {
         'totalReceivedAmount',
         'score',
       ];
-
       let result: any = [];
       data.forEach((d: any) => {
-        if (d.summary.status === 'Error') return;
-        result.push(pick(d.summary, keep));
+        if (d.summary.status === 'Error') {
+          res.status(204).send([]);
+          return;
+        } else {
+          result.push(pick(d.summary, keep));
+        }
       });
-
       res.status(200).send(result);
     })
     .catch((e) => {

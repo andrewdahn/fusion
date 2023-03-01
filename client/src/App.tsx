@@ -17,8 +17,11 @@ const App: React.FC = () => {
       setError('');
       axios
         .get('/summaries', { params: { type, addresses, key } })
-        .then(({ data }) => {
-          setSummaries(data);
+        .then((response) => {
+          if (response.status === 204) {
+            setError('API call limit');
+          }
+          setSummaries(response.data);
           setLoading(false);
         })
         .catch((error) => {
