@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react';
-import Form from './Form';
-import SummariesList from './SummariesList';
-import { Typography } from '@material-tailwind/react';
 import axios from 'axios';
-import { Summary } from '../types';
-import SummariesChart from './SummariesChart';
+import { Typography } from '@material-tailwind/react';
+import Form from './components/Form';
+import SummariesList from './components/SummariesList';
+import SummariesChart from './components/SummariesChart';
+import { Summary } from './types';
 
 const App: React.FC = () => {
   const [summaries, setSummaries] = useState<Summary[]>([]);
