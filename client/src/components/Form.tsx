@@ -43,37 +43,34 @@ const Form: React.FC<Props> = ({ fetchSummaries }) => {
     setType(e);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (): void => {
     const addr = content ? content.split('\n') : [];
     fetchSummaries(type, addr, key);
   };
 
   return (
-    <>
-      <div className='my-2'>
-        <Input label='API Key' onChange={handleKeyChange} />
-        <Textarea
-          value={content}
-          onChange={handleTextAreaInput}
-          label='Enter Addresses'
-        />
-        <Select
-          label='Select Address Type'
-          value={type}
-          onChange={handleAddrTypeChange}
-        >
-          {options.map((o, index) => {
-            return (
-              <Option key={index} value={o.key}>
-                {o.type_long}
-              </Option>
-            );
-          })}
-        </Select>
-        <Button onClick={handleSubmit}>Search</Button>
-        {key}
-      </div>
-    </>
+    <div className='flex flex-col items-center space-y-2'>
+      <Input label='API Key' onChange={handleKeyChange} />
+      <Textarea
+        value={content}
+        onChange={handleTextAreaInput}
+        label='Enter Addresses'
+      />
+      <Select
+        label='Select Address Type'
+        value={type}
+        onChange={handleAddrTypeChange}
+      >
+        {options.map((o, index) => {
+          return (
+            <Option key={index} value={o.key}>
+              {o.type_long}
+            </Option>
+          );
+        })}
+      </Select>
+      <Button onClick={handleSubmit}>Search</Button>
+    </div>
   );
 };
 

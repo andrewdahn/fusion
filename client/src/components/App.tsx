@@ -1,7 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import Form from './Form';
+import SummariesList from './SummariesList';
+import { Typography } from '@material-tailwind/react';
 import axios from 'axios';
 import { Summary } from '../types';
+import SummariesChart from './SummariesChart';
 
 const App: React.FC = () => {
   const [summaries, setSummaries] = useState<Summary[]>([]);
@@ -17,11 +20,11 @@ const App: React.FC = () => {
   );
 
   return (
-    <div>
+    <div className='container mx-auto'>
+      <Typography variant='h4'>BlockTrace Challenge</Typography>
       <Form fetchSummaries={fetchSummaries} />
-      {summaries.map((summary: Summary) => {
-        return <div>{summary.address}</div>;
-      })}
+      <SummariesList summaries={summaries} />
+      <SummariesChart summaries={summaries} />
     </div>
   );
 };
