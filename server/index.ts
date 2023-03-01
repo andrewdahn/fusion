@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import path from 'path';
 import axios from 'axios';
+import { pick } from 'lodash';
 dotenv.config();
 
 const app = express();
@@ -19,12 +20,22 @@ app.get('/summaries', (req: Request, res: Response) => {
   axios
     .request({
       method: 'POST',
-      url: `${process.env.URL}/bulk/${process.env.PROVIDER}/cluster/summary?type=${type}`,
+      url: `${process.env.URL}/bulk/${process.env.PROVIDER}/cluster/summary/all?type=${type}`,
       data: { addresses },
       headers: { api_key: process.env.KEY || (key as string) },
     })
     .then(({ data }) => {
-      res.status(200).send(data);
+      const keep = [
+        'address',
+        'name',
+        'type',
+        'balance',
+        'totalSentAmount',
+        'totalReceivedAmount',
+        'score',
+      ];
+      const result = data.map((d: any) => pick(d.summary, keep));
+      res.status(200).send(result);
     })
     .catch((e) => {
       res.status(404).send(e);
