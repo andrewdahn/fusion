@@ -35,7 +35,7 @@ const Form: React.FC<Props> = ({
 }) => {
   const [key, setKey] = useState<string>('');
   const [content, setContent] = useState<string>('');
-  const [type, setType] = useState<string>('');
+  const [type, setType] = useState<string>('btc');
 
   const handleTextAreaInput = (
     e: React.ChangeEvent<HTMLTextAreaElement>
@@ -53,7 +53,7 @@ const Form: React.FC<Props> = ({
 
   const handleSubmit = (): void => {
     const addr = content ? content.split('\n') : [];
-    if (!type || !addr || !key) {
+    if (!type || !content || !key) {
       setError('Fill in all the text fields!');
       return;
     }
