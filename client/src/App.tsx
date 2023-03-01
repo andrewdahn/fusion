@@ -18,7 +18,7 @@ const App: React.FC = () => {
       axios
         .get('/summaries', { params: { type, addresses, key } })
         .then((response) => {
-          if (response.status === 204) {
+          if (response.data.length === 0) {
             setError('API call limit');
           }
           setSummaries(response.data);

@@ -37,7 +37,6 @@ app.get('/summaries', (req: Request, res: Response) => {
       let result: any = [];
       data.forEach((d: any) => {
         if (d.summary.status === 'Error') {
-          res.status(204).send([]);
           return;
         } else {
           result.push(pick(d.summary, keep));
