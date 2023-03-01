@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import Chart from 'react-apexcharts';
 import { Summary } from '../types';
+import { isEmpty } from 'lodash';
 
 interface Props {
   summaries: Summary[];
@@ -18,24 +19,33 @@ const SummariesChart: React.FC<Props> = ({ summaries }) => {
     },
   });
 
-  const getSeries = useCallback(() => {
-    const sortedSummaries = summaries.sort(
-      (a, b) => b.totalSentAmount - a.totalSentAmount
-    );
-    const data = sortedSummaries.map((s) => s.totalSentAmount).slice(0, 5);
-    const categories = sortedSummaries.map((s) => s.address).slice(0, 5);
+  const getParams = useCallback(() => {
+    if (isEmpty(summaries[0])) {
+      setSeries([{ data: [1, 2, 3, 4, 5] }]);
+      setOptions({
+        xaxis: { categories: ['a', 'b', 'c', 'd', 'e'] },
+      });
+    } else {
+      const sortedSummaries = summaries.sort(
+        (a, b) => b.totalSentAmount - a.totalSentAmount
+      );
+      const data = sortedSummaries.map((s) => s.totalSentAmount).slice(0, 5);
+      const categories = sortedSummaries.map((s) => s.address).slice(0, 5);
 
-    setSeries([{ data }]);
-    setOptions({ xaxis: { categories: categories } });
+      setSeries([{ data }]);
+      setOptions({ xaxis: { categories } });
+    }
   }, [summaries]);
 
   useEffect(() => {
-    getSeries();
+    getParams();
   }, [summaries]);
 
   return (
     <div>
-      <Chart options={options} series={series} type='bar' />
+      {!isEmpty(summaries) ? (
+        <Chart options={options} series={series} type='bar' />
+      ) : null}
     </div>
   );
 };

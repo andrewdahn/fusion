@@ -34,7 +34,13 @@ app.get('/summaries', (req: Request, res: Response) => {
         'totalReceivedAmount',
         'score',
       ];
-      const result = data.map((d: any) => pick(d.summary, keep));
+
+      let result: any = [];
+      data.forEach((d: any) => {
+        if (d.summary.status === 'Error') return;
+        result.push(pick(d.summary, keep));
+      });
+
       res.status(200).send(result);
     })
     .catch((e) => {
