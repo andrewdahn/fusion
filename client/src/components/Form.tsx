@@ -7,6 +7,9 @@ import { Asset } from '../types';
 
 interface Props {
   fetchSummaries: (type: string, addresses: string[], key: string) => void;
+  loading: boolean;
+  error: string;
+  setError: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const options: Asset[] = [
@@ -24,7 +27,12 @@ const options: Asset[] = [
   },
 ];
 
-const Form: React.FC<Props> = ({ fetchSummaries }) => {
+const Form: React.FC<Props> = ({
+  fetchSummaries,
+  loading,
+  error,
+  setError,
+}) => {
   const [key, setKey] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [type, setType] = useState<string>('');
@@ -45,6 +53,10 @@ const Form: React.FC<Props> = ({ fetchSummaries }) => {
 
   const handleSubmit = (): void => {
     const addr = content ? content.split('\n') : [];
+    if (!type || !addr || !key) {
+      setError('Fill in all the text fields!');
+      return;
+    }
     fetchSummaries(type, addr, key);
   };
 
@@ -69,7 +81,8 @@ const Form: React.FC<Props> = ({ fetchSummaries }) => {
           );
         })}
       </Select>
-      <Button onClick={handleSubmit}>Search</Button>
+      <Button onClick={handleSubmit}>{loading ? 'Loading' : 'Search'}</Button>
+      <div className='text-red-500'>{error}</div>
     </div>
   );
 };

@@ -22,7 +22,7 @@ app.get('/summaries', (req: Request, res: Response) => {
       method: 'POST',
       url: `${process.env.URL}/bulk/${process.env.PROVIDER}/cluster/summary/all?type=${type}`,
       data: { addresses },
-      headers: { api_key: process.env.KEY || (key as string) },
+      headers: { api_key: key as string },
     })
     .then(({ data }) => {
       const keep = [
@@ -38,6 +38,6 @@ app.get('/summaries', (req: Request, res: Response) => {
       res.status(200).send(result);
     })
     .catch((e) => {
-      res.status(404).send(e);
+      res.status(404).send(e.message);
     });
 });

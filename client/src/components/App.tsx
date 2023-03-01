@@ -8,13 +8,23 @@ import SummariesChart from './SummariesChart';
 
 const App: React.FC = () => {
   const [summaries, setSummaries] = useState<Summary[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
 
   const fetchSummaries = useCallback(
     (type: string, addresses: string[], key: string): void => {
+      setLoading(true);
+      setError('');
       axios
         .get('/summaries', { params: { type, addresses, key } })
-        .then(({ data }) => setSummaries(data))
-        .catch((error) => console.log(error));
+        .then(({ data }) => {
+          setSummaries(data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          setLoading(false);
+          setError(error.message);
+        });
     },
     []
   );
@@ -22,7 +32,12 @@ const App: React.FC = () => {
   return (
     <div className='container mx-auto'>
       <Typography variant='h4'>BlockTrace Challenge</Typography>
-      <Form fetchSummaries={fetchSummaries} />
+      <Form
+        fetchSummaries={fetchSummaries}
+        loading={loading}
+        error={error}
+        setError={setError}
+      />
       <SummariesList summaries={summaries} />
       <SummariesChart summaries={summaries} />
     </div>
