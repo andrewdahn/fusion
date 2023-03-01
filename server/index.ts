@@ -15,15 +15,13 @@ app.listen(PORT, () => {
 });
 
 app.get('/summaries', (req: Request, res: Response) => {
-  const { type, addresses } = req.query;
+  const { type, addresses, key } = req.query;
   axios
     .request({
       method: 'POST',
       url: `${process.env.URL}/bulk/${process.env.PROVIDER}/cluster/summary?type=${type}`,
       data: { addresses },
-      headers: {
-        api_key: process.env.KEY,
-      },
+      headers: { api_key: process.env.KEY || (key as string) },
     })
     .then(({ data }) => {
       res.status(200).send(data);
